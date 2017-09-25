@@ -1,6 +1,7 @@
 package com.aallam.flappybird.states;
 
 import com.aallam.flappybird.FlappyBird;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -23,11 +24,14 @@ public class MenuState extends State {
   }
 
   @Override protected void handleInput() {
-
+    if(Gdx.input.justTouched()) {
+      gameStateManager.set(new PlayState(gameStateManager));
+      dispose();
+    }
   }
 
   @Override public void update(float deltaTime) {
-
+    handleInput();
   }
 
   @Override public void render(SpriteBatch spriteBatch) {
