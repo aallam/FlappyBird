@@ -2,6 +2,7 @@ package com.aallam.flappybird.states;
 
 import com.aallam.flappybird.FlappyBird;
 import com.aallam.flappybird.sprites.Bird;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -22,7 +23,9 @@ public class PlayState extends State {
   }
 
   @Override protected void handleInput() {
-
+    if (Gdx.input.justTouched()) {
+      bird.jump();
+    }
   }
 
   @Override public void update(float deltaTime) {

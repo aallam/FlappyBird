@@ -11,6 +11,7 @@ public class Bird {
 
   private static final String BIRD = "bird.png";
   private static final int GRAVITY = -15;
+  private static final int JUMP_VELOCITY = 400;
 
   private Vector2 position;
   private Vector2 velocity;
@@ -31,6 +32,10 @@ public class Bird {
 
   public void dispose() {
     texture.dispose();
+  }
+
+  public void jump() {
+    velocity.y = JUMP_VELOCITY;
   }
 
   public Vector2 getPosition() {
