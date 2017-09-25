@@ -10,30 +10,30 @@ import java.util.Stack;
 
 public class GameStateManager {
 
-    private Stack<State> states;
+  private Stack<State> states;
 
-    public GameStateManager() {
-        states = new Stack<State>();
-    }
+  public GameStateManager() {
+    states = new Stack<State>();
+  }
 
-    public void push(State state) {
-        states.push(state);
-    }
+  public void push(State state) {
+    states.push(state);
+  }
 
-    public void pop(State state) {
-        states.pop();
-    }
+  public void pop(State state) {
+    states.pop();
+  }
 
-    public void set(State state) {
-        states.pop();
-        states.push(state);
-    }
+  public void set(State state) {
+    states.pop();
+    states.push(state);
+  }
 
-    public void update(float deltaTime) {
-        states.peek().update(deltaTime);
-    }
+  public void update(float deltaTime) {
+    states.peek().update(deltaTime);
+  }
 
-    public void render(SpriteBatch spriteBatch) {
-        states.peek().render(spriteBatch);
-    }
+  public void render(SpriteBatch spriteBatch) {
+    states.peek().render(spriteBatch);
+  }
 }

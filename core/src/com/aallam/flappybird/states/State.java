@@ -9,17 +9,21 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public abstract class State {
-    protected OrthographicCamera camera;
-    protected Vector2 pointer;
-    protected GameStateManager gameStateManager;
+  protected OrthographicCamera camera;
+  protected Vector2 pointer;
+  protected GameStateManager gameStateManager;
 
-    public State(GameStateManager gameStateManager) {
-        this.gameStateManager = gameStateManager;
-        camera = new OrthographicCamera();
-        pointer = new Vector2();
-    }
+  public State(GameStateManager gameStateManager) {
+    this.gameStateManager = gameStateManager;
+    camera = new OrthographicCamera();
+    pointer = new Vector2();
+  }
 
-    protected abstract void handleInput();
-    public abstract void update(float deltaTime);
-    public abstract void render(SpriteBatch spriteBatch);
+  protected abstract void handleInput();
+
+  public abstract void update(float deltaTime);
+
+  public abstract void render(SpriteBatch spriteBatch);
+
+  public abstract void dispose();
 }
