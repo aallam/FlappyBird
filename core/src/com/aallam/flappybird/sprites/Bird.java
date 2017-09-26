@@ -11,6 +11,7 @@ public class Bird implements GameObject {
 
   private static final String BIRD = "bird.png";
   private static final int GRAVITY = -15;
+  private static final int MOVEMENT = 100;
   private static final int JUMP_VELOCITY = 400;
 
   private Vector2 position;
@@ -28,7 +29,7 @@ public class Bird implements GameObject {
       velocity.add(0, GRAVITY);
     }
     velocity.scl(deltaTime); //Scale the velocity by delta time
-    position.add(0, velocity.y);
+    position.add(MOVEMENT * deltaTime, velocity.y);
     if (position.y < 0) { //Check to not go down out of the screen
       position.y = 0;
     }

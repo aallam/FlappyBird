@@ -11,6 +11,7 @@ public class Tube implements GameObject {
   private static final int FLUCTUATION = 130;
   private static final int TUBE_GAP = 100; //Distance between top and bottom tubes
   private static final int LOWEST_OPENING = 120; //Lowest point to draw the top tube from
+  public static final float WIDTH = 52; //Texture (image) width
 
   private Vector2 positionTopTube, positionBottomTube;
   private Texture topTube, bottomTube;
@@ -20,10 +21,9 @@ public class Tube implements GameObject {
     topTube = new Texture(TUBE_TOP);
     bottomTube = new Texture(TUBE_Bottom);
     random = new Random();
-    //Set Top tube Y position
-    positionTopTube = new Vector2(position, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
-    //Set bottom tube Y position depending on top tube position, the tube will be drawn from the bottom, we remove the height to draw it correctly
-    positionBottomTube = new Vector2(position, positionTopTube.y - TUBE_GAP - bottomTube.getHeight());
+    positionTopTube = new Vector2();
+    positionBottomTube = new Vector2();
+    generatePosition(position);
   }
 
   public Vector2 getPositionTopTube() {
@@ -49,5 +49,12 @@ public class Tube implements GameObject {
   @Override public void dispose() {
     topTube.dispose();
     bottomTube.dispose();
+  }
+
+  public void generatePosition(float position) {
+    //Set Top tube Y position
+    positionTopTube.set(position, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
+    //Set bottom tube Y position depending on top tube position, the tube will be drawn from the bottom, we remove the height to draw it correctly
+    positionBottomTube.set(position, positionTopTube.y - TUBE_GAP - bottomTube.getHeight());
   }
 }
