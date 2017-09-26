@@ -1,6 +1,7 @@
 package com.aallam.flappybird.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.util.Random;
 
@@ -15,6 +16,7 @@ public class Tube implements GameObject {
 
   private Vector2 positionTopTube, positionBottomTube;
   private Texture topTube, bottomTube;
+  private Rectangle boundsTopTube, boundsBottomTube;
   private Random random;
 
   public Tube(float position) {
@@ -23,6 +25,12 @@ public class Tube implements GameObject {
     random = new Random();
     positionTopTube = new Vector2();
     positionBottomTube = new Vector2();
+    boundsTopTube = new Rectangle();
+    boundsTopTube.setWidth(topTube.getWidth());
+    boundsTopTube.setHeight(topTube.getHeight());
+    boundsBottomTube = new Rectangle();
+    boundsBottomTube.setWidth(bottomTube.getWidth());
+    boundsBottomTube.setHeight(bottomTube.getHeight());
     generatePosition(position);
   }
 
@@ -56,5 +64,11 @@ public class Tube implements GameObject {
     positionTopTube.set(position, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
     //Set bottom tube Y position depending on top tube position, the tube will be drawn from the bottom, we remove the height to draw it correctly
     positionBottomTube.set(position, positionTopTube.y - TUBE_GAP - bottomTube.getHeight());
+    boundsTopTube.setPosition(positionTopTube.x, positionTopTube.y);
+    boundsBottomTube.setPosition(positionBottomTube.x, positionBottomTube.y);
+  }
+
+  public boolean isCollide(Rectangle bird) {
+    return bird.overlaps(boundsTopTube) || bird.overlaps(boundsBottomTube);
   }
 }
