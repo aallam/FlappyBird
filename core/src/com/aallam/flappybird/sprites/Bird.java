@@ -24,9 +24,14 @@ public class Bird {
   }
 
   public void update(float deltaTime) {
-    velocity.add(0, GRAVITY);
+    if (position.y > 0) { //Add gravity only if above y axis
+      velocity.add(0, GRAVITY);
+    }
     velocity.scl(deltaTime); //Scale the velocity by delta time
     position.add(0, velocity.y);
+    if (position.y < 0) { //Check to not go down out of the screen
+      position.y = 0;
+    }
     velocity.scl(1 / deltaTime); //Add the scaled version to be used next
   }
 
