@@ -7,30 +7,30 @@ import java.util.Random;
 
 public class Tube implements GameObject {
 
+  public static final float WIDTH = 52; //Texture (image) width
   private static final String TUBE_TOP = "tube_top.png";
-  private static final String TUBE_Bottom = "tube_bottom.png";
+  private static final String TUBE_BOTTOM = "tube_bottom.png";
   private static final int FLUCTUATION = 130;
   private static final int TUBE_GAP = 100; //Distance between top and bottom tubes
   private static final int LOWEST_OPENING = 120; //Lowest point to draw the top tube from
-  public static final float WIDTH = 52; //Texture (image) width
+
+  private static final Texture TEXTURE_TUBE_TOP = new Texture(TUBE_TOP);
+  private static final Texture TEXTURE_TUBE_BOTTOM = new Texture(TUBE_BOTTOM);
 
   private Vector2 positionTopTube, positionBottomTube;
-  private Texture topTube, bottomTube;
   private Rectangle boundsTopTube, boundsBottomTube;
   private Random random;
 
   public Tube(float position) {
-    topTube = new Texture(TUBE_TOP);
-    bottomTube = new Texture(TUBE_Bottom);
     random = new Random();
     positionTopTube = new Vector2();
     positionBottomTube = new Vector2();
     boundsTopTube = new Rectangle();
-    boundsTopTube.setWidth(topTube.getWidth());
-    boundsTopTube.setHeight(topTube.getHeight());
+    boundsTopTube.setWidth(TEXTURE_TUBE_TOP.getWidth());
+    boundsTopTube.setHeight(TEXTURE_TUBE_TOP.getHeight());
     boundsBottomTube = new Rectangle();
-    boundsBottomTube.setWidth(bottomTube.getWidth());
-    boundsBottomTube.setHeight(bottomTube.getHeight());
+    boundsBottomTube.setWidth(TEXTURE_TUBE_BOTTOM.getWidth());
+    boundsBottomTube.setHeight(TEXTURE_TUBE_BOTTOM.getHeight());
     generatePosition(position);
   }
 
@@ -43,11 +43,11 @@ public class Tube implements GameObject {
   }
 
   public Texture getTopTube() {
-    return topTube;
+    return TEXTURE_TUBE_TOP;
   }
 
   public Texture getBottomTube() {
-    return bottomTube;
+    return TEXTURE_TUBE_BOTTOM;
   }
 
   @Override public void update(float deltaTime) {
@@ -55,15 +55,16 @@ public class Tube implements GameObject {
   }
 
   @Override public void dispose() {
-    topTube.dispose();
-    bottomTube.dispose();
+    TEXTURE_TUBE_TOP.dispose();
+    TEXTURE_TUBE_BOTTOM.dispose();
   }
 
   public void generatePosition(float position) {
     //Set Top tube Y position
     positionTopTube.set(position, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
     //Set bottom tube Y position depending on top tube position, the tube will be drawn from the bottom, we remove the height to draw it correctly
-    positionBottomTube.set(position, positionTopTube.y - TUBE_GAP - bottomTube.getHeight());
+    positionBottomTube.set(position,
+        positionTopTube.y - TUBE_GAP - TEXTURE_TUBE_BOTTOM.getHeight());
     boundsTopTube.setPosition(positionTopTube.x, positionTopTube.y);
     boundsBottomTube.setPosition(positionBottomTube.x, positionBottomTube.y);
   }

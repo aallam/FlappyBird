@@ -55,6 +55,7 @@ public class PlayState extends State {
       // Check every tube if it collides with the bird (not optimal for big wold)
       if (tube.isCollide(bird.getBounds())) {
         gameStateManager.set(new PlayState(gameStateManager));
+        break; //Leave after disposing the state, otherwise this will produce iterator error
       }
     }
     camera.update();
@@ -75,9 +76,9 @@ public class PlayState extends State {
 
   @Override public void dispose() {
     bird.dispose();
+    background.dispose();
     for (Tube tube : tubes) {
       tube.dispose();
     }
-    background.dispose();
   }
 }
