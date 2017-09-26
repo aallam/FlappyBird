@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  * Created by mouaad on 25/09/17.
  */
 
-public class Bird {
+public class Bird implements GameObject {
 
   private static final String BIRD = "bird.png";
   private static final int GRAVITY = -15;
@@ -23,7 +23,7 @@ public class Bird {
     texture = new Texture(BIRD);
   }
 
-  public void update(float deltaTime) {
+  @Override public void update(float deltaTime) {
     if (position.y > 0) { //Add gravity only if above y axis
       velocity.add(0, GRAVITY);
     }
@@ -35,7 +35,7 @@ public class Bird {
     velocity.scl(1 / deltaTime); //Add the scaled version to be used next
   }
 
-  public void dispose() {
+  @Override public void dispose() {
     texture.dispose();
   }
 
