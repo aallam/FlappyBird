@@ -2,6 +2,7 @@ package com.aallam.flappybird.states;
 
 import com.aallam.flappybird.FlappyBird;
 import com.aallam.flappybird.sprites.Bird;
+import com.aallam.flappybird.sprites.Ground;
 import com.aallam.flappybird.sprites.Tube;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ public class PlayState extends State {
   private Texture background;
   private Bird bird;
   private Array<Tube> tubes;
+  private Ground ground;
 
   public PlayState(GameStateManager gameStateManager) {
     super(gameStateManager);
@@ -34,6 +36,7 @@ public class PlayState extends State {
     for (int i = 1; i <= TUBES_COUNT; i++) {
       tubes.add(new Tube(i * (TUBES_HORIZONTAL_SPACE + Tube.WIDTH)));
     }
+    ground = new Ground(camera.position.x - CAMERA_OFFSET - camera.viewportWidth / 2);
   }
 
   @Override protected void handleInput() {
@@ -46,18 +49,8 @@ public class PlayState extends State {
     handleInput();
     bird.update(deltaTime);
     camera.position.x = bird.getPosition().x + CAMERA_OFFSET; //make the camera to follow the bird
-    for (Tube tube : tubes) {
-      if (camera.position.x - (camera.viewportWidth / 2)
-          > tube.getPositionTopTube().x + tube.getTopTube().getWidth()) {
-        tube.generatePosition(
-            tube.getPositionTopTube().x + (Tube.WIDTH + TUBES_HORIZONTAL_SPACE) * TUBES_COUNT);
-      }
-      // Check every tube if it collides with the bird (not optimal for big wold)
-      if (tube.isCollide(bird.getBounds())) {
-        gameStateManager.set(new PlayState(gameStateManager));
-        break; //Leave after disposing the state, otherwise this will produce iterator error
-      }
-    }
+    tubesUpdate();
+    updateGround();
     camera.update();
   }
 
@@ -68,17 +61,52 @@ public class PlayState extends State {
     spriteBatch.draw(bird.getTexture(), bird.getPosition().x, bird.getPosition().y);
     for (Tube tube : tubes) {
       spriteBatch.draw(tube.getTopTube(), tube.getPositionTopTube().x, tube.getPositionTopTube().y);
-      spriteBatch.draw(tube.getBottomTube(), tube.getPositionBottomTube().x,
-          tube.getPositionBottomTube().y);
+      spriteBatch.draw(tube.getBottomTube(), tube.getPositionBottomTube().x, tube.getPositionBottomTube().y);
     }
+    spriteBatch.draw(ground.getTexture(), ground.getPositionOne().x, ground.getPositionOne().y);
+    spriteBatch.draw(ground.getTexture(), ground.getPositionTwo().x, ground.getPositionTwo().y);
     spriteBatch.end();
   }
 
   @Override public void dispose() {
     bird.dispose();
     background.dispose();
+    ground.dispose();
     for (Tube tube : tubes) {
       tube.dispose();
     }
+  }
+
+  private void tubesUpdate() {
+    for (Tube tube : tubes) {
+      if (camera.position.x - (camera.viewportWidth / 2) > tube.getPositionTopTube().x + tube.getTopTube().getWidth()) {
+        tube.generatePosition(tube.getPositionTopTube().x + (Tube.WIDTH + TUBES_HORIZONTAL_SPACE) * TUBES_COUNT);
+      }
+      // Check every tube if it collides with the bird (not optimal for big wold)
+      if (tubeBirdCollision(tube)) {
+        gameStateManager.set(new PlayState(gameStateManager));
+        break; //Leave after disposing the state, otherwise this will produce iterator error
+      }
+    }
+  }
+
+  private boolean tubeBirdCollision(Tube tube) {
+    return tube.isCollide(bird.getBounds());
+  }
+
+  private void updateGround() {
+    if (camera.position.x - (camera.viewportHeight / 2) > ground.getPositionOne().x + Ground.WIDTH){
+      ground.getPositionOne().x = ground.getPositionOne().x + Ground.WIDTH * 2;
+    }
+    if (camera.position.x - (camera.viewportHeight / 2) > ground.getPositionTwo().x + Ground.WIDTH){
+      ground.getPositionTwo().x = ground.getPositionTwo().x + Ground.WIDTH * 2;
+    }
+    if (groundBirdCollision()) {
+      gameStateManager.set(new PlayState(gameStateManager));
+    }
+  }
+
+  private boolean groundBirdCollision() {
+    return bird.getPosition().y <= ground.getTexture().getHeight() + Ground.OFFSET_Y;
   }
 }

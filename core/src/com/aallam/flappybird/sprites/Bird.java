@@ -3,12 +3,13 @@ package com.aallam.flappybird.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Created by mouaad on 25/09/17.
  */
 
-public class Bird implements GameObject {
+public class Bird implements Disposable {
 
   private static final String BIRD = "bird.png";
   private static final int GRAVITY = -15;
@@ -27,7 +28,7 @@ public class Bird implements GameObject {
     bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
   }
 
-  @Override public void update(float deltaTime) {
+  public void update(float deltaTime) {
     if (position.y > 0) { //Add gravity only if above y axis
       velocity.add(0, GRAVITY);
     }
