@@ -5,6 +5,7 @@ import com.aallam.flappybird.sprites.Bird;
 import com.aallam.flappybird.sprites.Ground;
 import com.aallam.flappybird.sprites.Tube;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -40,7 +41,7 @@ public class PlayState extends State {
   }
 
   @Override protected void handleInput() {
-    if (Gdx.input.justTouched()) {
+    if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
       bird.jump();
     }
   }
@@ -84,6 +85,7 @@ public class PlayState extends State {
       }
       // Check every tube if it collides with the bird (not optimal for big wold)
       if (tubeBirdCollision(tube)) {
+        bird.playHit();
         gameStateManager.set(new PlayState(gameStateManager));
         break; //Leave after disposing the state, otherwise this will produce iterator error
       }
@@ -102,6 +104,7 @@ public class PlayState extends State {
       ground.getPositionTwo().x = ground.getPositionTwo().x + Ground.WIDTH * 2;
     }
     if (groundBirdCollision()) {
+      bird.playDie();
       gameStateManager.set(new PlayState(gameStateManager));
     }
   }
