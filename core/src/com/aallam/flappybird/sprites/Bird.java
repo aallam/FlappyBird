@@ -52,7 +52,7 @@ public class Bird implements Disposable {
   public void update(float deltaTime) {
     animation.update(deltaTime);
     if (position.y > 0) { //Add gravity only if above y axis
-      velocity.add(0, GRAVITY);
+      velocity.y += GRAVITY;
     }
     velocity.scl(deltaTime); //Scale the velocity by delta time
     position.add(MOVEMENT * deltaTime, velocity.y);

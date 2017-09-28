@@ -2,13 +2,13 @@ package com.aallam.flappybird;
 
 import com.aallam.flappybird.states.GameStateManager;
 import com.aallam.flappybird.states.MenuState;
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class FlappyBird extends ApplicationAdapter {
+public class FlappyBird extends Game {
 
   public static final String TITLE = "Flappy Bird";
   public static float MUSIC_VOLUME = 0.1f; //10%
@@ -24,10 +24,10 @@ public class FlappyBird extends ApplicationAdapter {
   private Music music;
 
   @Override public void create() {
+    Gdx.gl.glClearColor(0, 0, 0, 1);
     spriteBatch = new SpriteBatch();
     gameStateManager = new GameStateManager();
     menuState = new MenuState(gameStateManager);
-    Gdx.gl.glClearColor(0, 0, 0, 1);
     gameStateManager.push(menuState);
     initMusic();
   }

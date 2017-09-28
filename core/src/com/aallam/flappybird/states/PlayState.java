@@ -97,10 +97,10 @@ public class PlayState extends State {
   }
 
   private void updateGround() {
-    if (camera.position.x - (camera.viewportHeight / 2) > ground.getPositionOne().x + Ground.WIDTH){
+    if (camera.position.x - (camera.viewportHeight / 2) > ground.getPositionOne().x + Ground.WIDTH) {
       ground.getPositionOne().x = ground.getPositionOne().x + Ground.WIDTH * 2;
     }
-    if (camera.position.x - (camera.viewportHeight / 2) > ground.getPositionTwo().x + Ground.WIDTH){
+    if (camera.position.x - (camera.viewportHeight / 2) > ground.getPositionTwo().x + Ground.WIDTH) {
       ground.getPositionTwo().x = ground.getPositionTwo().x + Ground.WIDTH * 2;
     }
     if (groundBirdCollision()) {
