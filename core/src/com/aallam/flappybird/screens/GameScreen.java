@@ -1,8 +1,8 @@
 package com.aallam.flappybird.screens;
 
 import com.aallam.flappybird.FlappyBird;
-import com.aallam.flappybird.gameworld.GameRenderer;
-import com.aallam.flappybird.gameworld.GameWorld;
+import com.aallam.flappybird.world.GameRenderer;
+import com.aallam.flappybird.world.GameWorld;
 import com.aallam.flappybird.helpers.InputHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

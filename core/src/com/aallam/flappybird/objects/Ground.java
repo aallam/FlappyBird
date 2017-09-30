@@ -1,36 +1,25 @@
 package com.aallam.flappybird.objects;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by mouaad on 30/09/17.
  */
 
-public class Ground {
+public class Ground extends Scrollable {
 
-  private Vector2 positionOne;
-  private Vector2 positionTwo;
-  private int offset;
-  private int width;
-  private int height;
+  public static final int GROUND_OFFSET_Y = -20;
 
-  public Ground(int offset, int width, int height) {
-    this.offset = offset;
-    this.width = width;
-    this.height = height;
+  private Rectangle bounds;
+
+  public Ground(float x, float y, int width, int height, float scrollSpeed) {
+    super(x, y, width, height, scrollSpeed);
+    bounds = new Rectangle(x, y, width, height);
   }
 
-  public void init(float position) {
-    positionOne = new Vector2(position, offset);
-    positionTwo = new Vector2(position + width, offset);
-  }
-
-  public Vector2 getPositionOne() {
-    return positionOne;
-  }
-
-  public Vector2 getPositionTwo() {
-    return positionTwo;
+  @Override public void update(float delta) {
+    super.update(delta);
+    bounds.setPosition(position.x, position.y);
   }
 
   public int getWidth() {
@@ -39,5 +28,9 @@ public class Ground {
 
   public int getHeight() {
     return height;
+  }
+
+  public Rectangle getBounds() {
+    return bounds;
   }
 }

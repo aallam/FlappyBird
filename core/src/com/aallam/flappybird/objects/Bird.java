@@ -1,5 +1,6 @@
 package com.aallam.flappybird.objects;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -8,21 +9,22 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Bird {
 
+  // Class constants
   private static final int FLAP = 230;
   private static final int GRAVITY = -460;
   private static final int VELOCITY_LIMIT = -345;
-
   private static final int ROTATION_CW = 480;
   private static final int ROTATION_CCW = 360;
   private static final int ROTATION_MAX_UP = 20;
   private static final int ROTATION_MAX_DOWN = -90;
-
   private static final int FALL = -110;
   private static final int FLAP_AT = -70;
 
+  // Instance variables
   private Vector2 position;
   private Vector2 velocity;
   private Vector2 acceleration;
+  private Circle bounds;
 
   private float rotation;
   private int width;
@@ -34,6 +36,7 @@ public class Bird {
     position = new Vector2(x, y);
     velocity = new Vector2(0, 0);
     acceleration = new Vector2(0, GRAVITY);
+    bounds = new Circle();
   }
 
   public void update(float delta) {
@@ -43,6 +46,8 @@ public class Bird {
       velocity.y = VELOCITY_LIMIT;
     }
     position.add(velocity.cpy().scl(delta));
+
+    bounds.set(position.x + 18, position.y + 12, 12.5f);
 
     // Rotate counterclockwise
     if (velocity.y > 0) {
@@ -61,8 +66,9 @@ public class Bird {
     }
   }
 
-  public void onClick() {
+  public boolean onClick() {
     velocity.y = FLAP;
+    return true;
   }
 
   public boolean isFalling() {
@@ -91,5 +97,9 @@ public class Bird {
 
   public float getRotation() {
     return rotation;
+  }
+
+  public Circle getBounds() {
+    return bounds;
   }
 }
