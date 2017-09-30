@@ -7,7 +7,10 @@ import com.aallam.flappybird.screens.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -22,6 +25,13 @@ public class GameRenderer implements Disposable {
   private ShapeRenderer shapeRenderer;
   private SpriteBatch spriteBatch;
 
+  private Bird bird;
+  private Ground ground;
+
+  private Texture groundTxtr;
+  private Texture backgroundTxtr;
+  private Animation<TextureRegion> birdAnim;
+
   public GameRenderer(GameWorld world) {
     this.world = world;
 
@@ -34,7 +44,20 @@ public class GameRenderer implements Disposable {
     shapeRenderer = new ShapeRenderer();
     shapeRenderer.setProjectionMatrix(camera.combined);
 
-    world.getGround().init(camera.position.x - camera.viewportWidth / 2);
+    initGameObjects();
+    initAssets();
+  }
+
+  private void initGameObjects() {
+    bird = world.getBird();
+    ground = world.getGround();
+    ground.init(camera.position.x - camera.viewportWidth / 2);
+  }
+
+  private void initAssets() {
+    backgroundTxtr = AssetLoader.BACKGROUND;
+    groundTxtr = AssetLoader.GROUND;
+    birdAnim = AssetLoader.BIRD_ANIMATION;
   }
 
   public void render(float runTime) {
@@ -42,26 +65,30 @@ public class GameRenderer implements Disposable {
 
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    Bird bird = world.getBird();
-    Ground ground = world.getGround();
-
     // Begin SpriteBatch
     spriteBatch.begin();
 
     // Draw background
     spriteBatch.disableBlending(); //Disable transparency
-    spriteBatch.draw(AssetLoader.BACKGROUND, 0, 0, GameScreen.WIDTH, GameScreen.HEIGHT);
+    spriteBatch.draw(backgroundTxtr, 0, 0, GameScreen.WIDTH, GameScreen.HEIGHT);
 
     // Draw ground
-    spriteBatch.draw(AssetLoader.GROUND, ground.getPositionOne().x, ground.getPositionOne().y,
+    spriteBatch.draw(groundTxtr, ground.getPositionOne().x, ground.getPositionOne().y,
         ground.getWidth(), ground.getHeight());
-    spriteBatch.draw(AssetLoader.GROUND, ground.getPositionTwo().x, ground.getPositionTwo().y,
+    spriteBatch.draw(groundTxtr, ground.getPositionTwo().x, ground.getPositionTwo().y,
         ground.getWidth(), ground.getHeight());
 
     // Draw bird
-    spriteBatch.enableBlending();
-    spriteBatch.draw(AssetLoader.BIRD_ANIMATION.getKeyFrame(runTime), bird.getX(), bird.getY(),
-        bird.getWidth(), bird.getHeight());
+    spriteBatch.enableBlending(); // enable transparency
+    if (bird.doFlap()) {
+      spriteBatch.draw(birdAnim.getKeyFrame(runTime), bird.getX(), bird.getY(),
+          bird.getWidth() / 2.0f, bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1,
+          bird.getRotation());
+    } else {
+      spriteBatch.draw(birdAnim.getKeyFrames()[1], bird.getX(), bird.getY(),
+          bird.getWidth() / 3.0f, bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1,
+          bird.getRotation());
+    }
 
     // End SpriteBatch
     spriteBatch.end();
