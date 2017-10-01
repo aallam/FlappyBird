@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -13,15 +14,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-  private static final String TEXTURE_PLAY_BUTTON = "button_play.png";
-  private static final String TEXTURE_TUBE = "tube.png";
-  private static final String TEXTURE_GROUND = "ground.png";
-  private static final String TEXTURE_BACKGROUND = "background.png";
-  private static final String TEXTURE_REGION_BIRD_FLY = "animation_bird.png";
+  private static final String TEXTURE_PLAY_BUTTON = "img/button_play.png";
+  private static final String TEXTURE_TUBE = "img/tube.png";
+  private static final String TEXTURE_GROUND = "img/ground.png";
+  private static final String TEXTURE_BACKGROUND = "img/background.png";
+  private static final String TEXTURE_REGION_BIRD_FLY = "img/animation_bird.png";
 
-  private static final String MUSIC_SOUND = "music.mp3";
-  private static final String SFX_WING_OGG = "sfx_wing.ogg";
-  private static final String SFX_DIE_OGG = "sfx_die.ogg";
+  private static final String MUSIC_SOUND = "sound/music.mp3";
+  private static final String SFX_WING_OGG = "sound/sfx_flap.ogg";
+  private static final String SFX_DIE_OGG = "sound/sfx_die.ogg";
+  private static final String SFX_POINT_OGG = "sound/sfx_point.ogg";
+  private static final String SFX_HIT_OGG = "sound/sfx_hit.ogg";
 
   public static final int ANIMATION_BIRD_FRAME_COUNT = 3;
   public static Texture TEXTURE_BIRD_ANIMATION;
@@ -35,6 +38,10 @@ public class AssetLoader {
   public static Music MUSIC;
   public static Sound SFX_WING;
   public static Sound SFX_DIE;
+  public static Sound SFX_HIT;
+  public static Sound SFX_POINT;
+  public static BitmapFont FONT;
+  public static BitmapFont SHADOW;
 
   public static void load() {
     PLAY_BUTTON = new Texture(Gdx.files.internal(TEXTURE_PLAY_BUTTON));
@@ -51,14 +58,20 @@ public class AssetLoader {
       BIRD[i] = new TextureRegion(textureRegion, i * frameWidth, 0, frameWidth,
           textureRegion.getRegionHeight());
     }
-
     BIRD_ANIMATION = new Animation<TextureRegion>(0.06f, BIRD);
     BIRD_ANIMATION.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
+    SFX_POINT = Gdx.audio.newSound(Gdx.files.internal(SFX_POINT_OGG));
     SFX_WING = Gdx.audio.newSound(Gdx.files.internal(SFX_WING_OGG));
     SFX_DIE = Gdx.audio.newSound(Gdx.files.internal(SFX_DIE_OGG));
+    SFX_HIT = Gdx.audio.newSound(Gdx.files.internal(SFX_HIT_OGG));
     MUSIC = Gdx.audio.newMusic(Gdx.files.internal(MUSIC_SOUND));
     MUSIC.setLooping(true);
+
+    FONT = new BitmapFont(Gdx.files.internal("text/text.fnt"));
+    FONT.getData().setScale(.25f, .25f);
+    SHADOW = new BitmapFont(Gdx.files.internal("text/shadow.fnt"));
+    SHADOW.getData().setScale(.25f, .25f);
   }
 
   public static void dispose() {
@@ -70,5 +83,9 @@ public class AssetLoader {
     MUSIC.dispose();
     SFX_WING.dispose();
     SFX_DIE.dispose();
+    SFX_POINT.dispose();
+    SFX_HIT.dispose();
+    FONT.dispose();
+    SHADOW.dispose();
   }
 }

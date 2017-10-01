@@ -6,6 +6,7 @@ import com.aallam.flappybird.objects.Bird;
 import com.aallam.flappybird.objects.Ground;
 import com.aallam.flappybird.objects.Tube;
 import com.aallam.flappybird.screens.GameScreen;
+import com.aallam.flappybird.world.interfaces.GameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
+import static com.aallam.flappybird.FlappyBird.SCORE_POSITION;
 import static com.aallam.flappybird.objects.Tube.TUBE_GAP;
 
 /**
@@ -24,7 +26,7 @@ import static com.aallam.flappybird.objects.Tube.TUBE_GAP;
 
 public class GameRenderer implements Disposable {
 
-  private GameWorld world;
+  private GameObjects gameObjects;
   private OrthographicCamera camera;
   private ShapeRenderer shapeRenderer;
   private SpriteBatch spriteBatch;
@@ -41,8 +43,8 @@ public class GameRenderer implements Disposable {
   private Texture tubeTxtr;
   private Animation<TextureRegion> birdAnim;
 
-  public GameRenderer(GameWorld world) {
-    this.world = world;
+  public GameRenderer(GameObjects gameObjects) {
+    this.gameObjects = gameObjects;
 
     camera = new OrthographicCamera();
     camera.setToOrtho(false, GameScreen.WIDTH, GameScreen.HEIGHT);
@@ -58,8 +60,8 @@ public class GameRenderer implements Disposable {
   }
 
   private void initGameObjects() {
-    bird = world.getBird();
-    scroller = world.getScroller();
+    bird = gameObjects.getBird();
+    scroller = gameObjects.getScroller();
     frontGround = scroller.getFrontGround();
     backGround = scroller.getBackGround();
     tube1 = scroller.getTube1();
@@ -94,6 +96,8 @@ public class GameRenderer implements Disposable {
     spriteBatch.enableBlending();
     drawBird(runTime);
 
+    drawScore();
+
     // End SpriteBatch
     spriteBatch.end();
   }
@@ -125,17 +129,29 @@ public class GameRenderer implements Disposable {
     // Draw Tube 1
     spriteBatch.draw(tubeTxtr, tube1.getX(), tube1.getY(), tube1.getWidth(), tube1.getHeight());
     spriteBatch.draw(tubeTxtr, tube1.getX(), tube1.getY() + tube1.getHeight() * 2 + TUBE_GAP,
-        tube1.getWidth(),  - tube1.getHeight());
+        tube1.getWidth(), -tube1.getHeight());
 
     // Draw Tube 2
     spriteBatch.draw(tubeTxtr, tube2.getX(), tube2.getY(), tube2.getWidth(), tube2.getHeight());
     spriteBatch.draw(tubeTxtr, tube2.getX(), tube2.getY() + tube2.getHeight() * 2 + TUBE_GAP,
-        tube2.getWidth(),  - tube2.getHeight());
+        tube2.getWidth(), -tube2.getHeight());
 
     // Draw Tube 3
     spriteBatch.draw(tubeTxtr, tube3.getX(), tube3.getY(), tube3.getWidth(), tube3.getHeight());
     spriteBatch.draw(tubeTxtr, tube3.getX(), tube3.getY() + tube3.getHeight() * 2 + TUBE_GAP,
-        tube3.getWidth(),  - tube3.getHeight());
+        tube3.getWidth(), -tube3.getHeight());
+  }
+
+  private void drawScore() {
+    String score = Integer.toString(gameObjects.getScore());
+    // Draw shadow
+    AssetLoader.SHADOW.draw(spriteBatch, score,
+        GameScreen.WIDTH - (SCORE_POSITION - 1) - (10 * score.length()),
+        GameScreen.HEIGHT - (SCORE_POSITION + 1));
+    // Draw text
+    AssetLoader.FONT.draw(spriteBatch, score,
+        GameScreen.WIDTH - SCORE_POSITION - (10 * score.length()),
+        GameScreen.HEIGHT - SCORE_POSITION);
   }
 
   @Override public void dispose() {

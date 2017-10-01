@@ -1,7 +1,11 @@
 package com.aallam.flappybird.objects;
 
+import com.aallam.flappybird.helpers.AssetLoader;
+import com.aallam.flappybird.screens.GameScreen;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+
+import static com.aallam.flappybird.FlappyBird.SFX_VOLUME;
 
 /**
  * Created by mouaad on 28/09/17.
@@ -42,14 +46,21 @@ public class Bird {
   }
 
   public void update(float delta) {
-    //Fall
+    bounds.set(position.x + 18, position.y + 12, 12.5f);
+
+    // Fall
     velocity.add(acceleration.cpy().scl(delta));
     if (velocity.y < VELOCITY_LIMIT) {
       velocity.y = VELOCITY_LIMIT;
     }
-    position.add(velocity.cpy().scl(delta));
 
-    bounds.set(position.x + 18, position.y + 12, 12.5f);
+    // Ceiling
+    if (position.y > GameScreen.HEIGHT - 15) {
+      position.y = GameScreen.HEIGHT - 15;
+      velocity.y = 0;
+    }
+
+    position.add(velocity.cpy().scl(delta));
 
     // Rotate counterclockwise
     if (velocity.y > 0) {
@@ -60,7 +71,7 @@ public class Bird {
     }
 
     // Rotate clockwise
-    if (isFalling()) {
+    if (isFalling() && alive) {
       rotation -= ROTATION_CCW * delta;
       if (rotation < ROTATION_MAX_DOWN) {
         rotation = ROTATION_MAX_DOWN;
@@ -69,7 +80,10 @@ public class Bird {
   }
 
   public boolean onClick() {
-    velocity.y = FLAP;
+    if (alive) {
+      AssetLoader.SFX_WING.play(SFX_VOLUME);
+      velocity.y = FLAP;
+    }
     return true;
   }
 
@@ -78,7 +92,21 @@ public class Bird {
   }
 
   public boolean doFlap() {
-    return velocity.y > FLAP_AT;
+    return alive && velocity.y > FLAP_AT;
+  }
+
+  public void die() {
+    alive = false;
+    velocity.y = 0;
+  }
+
+  public void decelerate() {
+    acceleration.y = 0;
+  }
+
+  public void stop() {
+    velocity.y = 0;
+    acceleration.y = 0;
   }
 
   public float getX() {
@@ -111,5 +139,9 @@ public class Bird {
 
   public void setAlive(boolean alive) {
     this.alive = alive;
+  }
+
+  private void checkCeiling() {
+
   }
 }

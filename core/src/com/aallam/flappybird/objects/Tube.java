@@ -16,6 +16,7 @@ public class Tube extends Scrollable {
 
   private Random random;
   private Rectangle boundsBottom, boundsTop;
+  private boolean scored;
 
   public Tube(float x, float y, int width, int height, float scrollSpeed) {
     super(x, y, width, height, scrollSpeed);
@@ -35,6 +36,7 @@ public class Tube extends Scrollable {
   @Override public void reset(float newX) {
     super.reset(newX);
     position.y = generateY();
+    scored = false;
   }
 
   public Rectangle getBoundsBottom() {
@@ -43,6 +45,14 @@ public class Tube extends Scrollable {
 
   public Rectangle getBoundsTop() {
     return boundsTop;
+  }
+
+  public boolean isScored() {
+    return scored;
+  }
+
+  public void setScored(boolean scored) {
+    this.scored = scored;
   }
 
   private int generateY() {

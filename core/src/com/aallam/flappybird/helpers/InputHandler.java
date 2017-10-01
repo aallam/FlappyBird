@@ -4,8 +4,6 @@ import com.aallam.flappybird.objects.Bird;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
-import static com.aallam.flappybird.FlappyBird.SFX_VOLUME;
-
 /**
  * Created by mouaad on 28/09/17.
  */
@@ -20,7 +18,6 @@ public class InputHandler implements InputProcessor {
 
   @Override public boolean keyDown(int keycode) {
     if (keycode == Input.Keys.SPACE) {
-      AssetLoader.SFX_WING.play(SFX_VOLUME);
       bird.onClick();
       return true;
     }
@@ -36,7 +33,6 @@ public class InputHandler implements InputProcessor {
   }
 
   @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    AssetLoader.SFX_WING.play(SFX_VOLUME);
     return bird.onClick();
   }
 

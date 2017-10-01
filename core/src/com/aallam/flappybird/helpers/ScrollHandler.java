@@ -4,7 +4,9 @@ import com.aallam.flappybird.objects.Bird;
 import com.aallam.flappybird.objects.Ground;
 import com.aallam.flappybird.objects.Tube;
 import com.aallam.flappybird.screens.GameScreen;
+import com.aallam.flappybird.world.interfaces.Score;
 
+import static com.aallam.flappybird.FlappyBird.SFX_VOLUME;
 import static com.aallam.flappybird.helpers.AssetLoader.GROUND;
 import static com.aallam.flappybird.helpers.AssetLoader.TUBE;
 import static com.aallam.flappybird.objects.Tube.TUBE_GAP;
@@ -17,10 +19,12 @@ public class ScrollHandler {
 
   private static final int SCROLL_SPEED = -60;
 
+  private Score score;
   private Ground frontGround, backGround;
   private Tube tube1, tube2, tube3;
 
-  public ScrollHandler(float yPos) {
+  public ScrollHandler(Score score, float yPos) {
+    this.score = score;
     frontGround = new Ground(0, yPos, GROUND.getWidth(), GROUND.getHeight(), SCROLL_SPEED);
     backGround = new Ground(frontGround.getTailX(), yPos, GROUND.getWidth(), GROUND.getHeight(),
         SCROLL_SPEED);
@@ -83,11 +87,35 @@ public class ScrollHandler {
     tube3.stop();
   }
 
+  public boolean tubeCollides(Bird bird) {
+    checkScore(bird);
+    return tube1.collides(bird) || tube2.collides(bird) || tube3.collides(bird);
+  }
+
+  public boolean groundCollides(Bird bird) {
+    return backGround.collides(bird) || frontGround.collides(bird);
+  }
+
   public boolean collides(Bird bird) {
-    return (tube1.collides(bird)
-        || tube2.collides(bird)
-        || tube3.collides(bird)
-        || backGround.collides(bird)
-        || frontGround.collides(bird));
+    return tubeCollides(bird) || groundCollides(bird);
+  }
+
+  private void checkScore(Bird bird) {
+    if (!tube1.isScored()
+        && tube1.getX() + (tube1.getWidth() / 2) < bird.getX() + bird.getWidth()) {
+      score.addScore(1);
+      tube1.setScored(true);
+      AssetLoader.SFX_POINT.play(SFX_VOLUME);
+    } else if (!tube2.isScored()
+        && tube2.getX() + (tube2.getWidth() / 2) < bird.getX() + bird.getWidth()) {
+      score.addScore(1);
+      tube2.setScored(true);
+      AssetLoader.SFX_POINT.play(SFX_VOLUME);
+    } else if (!tube3.isScored()
+        && tube3.getX() + (tube3.getWidth() / 2) < bird.getX() + bird.getWidth()) {
+      score.addScore(1);
+      tube3.setScored(true);
+      AssetLoader.SFX_POINT.play(SFX_VOLUME);
+    }
   }
 }
