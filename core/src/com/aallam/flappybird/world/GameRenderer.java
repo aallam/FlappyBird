@@ -7,6 +7,7 @@ import com.aallam.flappybird.objects.Ground;
 import com.aallam.flappybird.objects.Tube;
 import com.aallam.flappybird.screens.GameScreen;
 import com.aallam.flappybird.world.interfaces.GameObjects;
+import com.aallam.flappybird.world.interfaces.Status;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -96,7 +97,7 @@ public class GameRenderer implements Disposable {
     spriteBatch.enableBlending();
     drawBird(runTime);
 
-    drawScore();
+    drawText();
 
     // End SpriteBatch
     spriteBatch.end();
@@ -142,16 +143,32 @@ public class GameRenderer implements Disposable {
         tube3.getWidth(), -tube3.getHeight());
   }
 
-  private void drawScore() {
-    String score = Integer.toString(gameObjects.getScore());
-    // Draw shadow
-    AssetLoader.SHADOW.draw(spriteBatch, score,
-        GameScreen.WIDTH - (SCORE_POSITION - 1) - (10 * score.length()),
-        GameScreen.HEIGHT - (SCORE_POSITION + 1));
-    // Draw text
-    AssetLoader.FONT.draw(spriteBatch, score,
-        GameScreen.WIDTH - SCORE_POSITION - (10 * score.length()),
-        GameScreen.HEIGHT - SCORE_POSITION);
+  private void drawText() {
+
+    if (((Status) gameObjects).isReady()) {
+      // Draw start text
+      AssetLoader.SHADOW.draw(spriteBatch, "Touch me", GameScreen.WIDTH / 2 - (41),
+          GameScreen.HEIGHT / 2 - 1);
+      AssetLoader.FONT.draw(spriteBatch, "Touch me", GameScreen.WIDTH / 2 - (42),
+          GameScreen.HEIGHT / 2);
+    } else {
+      // Draw end text
+      if (((Status) gameObjects).isGameOver()) {
+        AssetLoader.SHADOW.draw(spriteBatch, "Game Over\nTry again?", GameScreen.WIDTH / 2 - 50,
+            (int) (GameScreen.HEIGHT * 0.60) - 2);
+        AssetLoader.FONT.draw(spriteBatch, "Game Over\nTry again?", GameScreen.WIDTH / 2 - 51,
+            (int) (GameScreen.HEIGHT * 0.60));
+      }
+
+      // Draw score
+      String score = Integer.toString(gameObjects.getScore());
+      AssetLoader.SHADOW.draw(spriteBatch, score,
+          GameScreen.WIDTH - (SCORE_POSITION - 1) - (10 * score.length()),
+          GameScreen.HEIGHT - (SCORE_POSITION + 1));
+      AssetLoader.FONT.draw(spriteBatch, score,
+          GameScreen.WIDTH - SCORE_POSITION - (10 * score.length()),
+          GameScreen.HEIGHT - SCORE_POSITION);
+    }
   }
 
   @Override public void dispose() {
