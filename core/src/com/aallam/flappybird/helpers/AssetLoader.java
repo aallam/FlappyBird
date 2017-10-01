@@ -1,6 +1,7 @@
 package com.aallam.flappybird.helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,19 +32,27 @@ public class AssetLoader {
 
   public static TextureRegion[] BIRD;
   public static Animation<TextureRegion> BIRD_ANIMATION;
-  public static Texture PLAY_BUTTON;
-  public static Texture TUBE;
-  public static Texture GROUND;
-  public static Texture BACKGROUND;
+  public static Texture PLAY_BUTTON, TUBE, GROUND, BACKGROUND;
   public static Music MUSIC;
-  public static Sound SFX_WING;
-  public static Sound SFX_DIE;
-  public static Sound SFX_HIT;
-  public static Sound SFX_POINT;
-  public static BitmapFont FONT;
-  public static BitmapFont SHADOW;
+  public static Sound SFX_WING, SFX_DIE, SFX_HIT, SFX_POINT;
+  public static BitmapFont FONT, SHADOW;
+  public static Preferences PREFS;
 
   public static void load() {
+    loadPrefs();
+    loadTextures();
+    loadSounds();
+    loadFonts();
+  }
+
+  private static void loadPrefs() {
+    PREFS = Gdx.app.getPreferences("FlappyBird");
+    if (!PREFS.contains("highScore")) {
+      PREFS.putInteger("highScore", 0);
+    }
+  }
+
+  private static void loadTextures() {
     PLAY_BUTTON = new Texture(Gdx.files.internal(TEXTURE_PLAY_BUTTON));
     TUBE = new Texture(Gdx.files.internal(TEXTURE_TUBE));
     GROUND = new Texture(Gdx.files.internal(TEXTURE_GROUND));
@@ -60,18 +69,31 @@ public class AssetLoader {
     }
     BIRD_ANIMATION = new Animation<TextureRegion>(0.06f, BIRD);
     BIRD_ANIMATION.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
+  }
 
+  private static void loadSounds() {
     SFX_POINT = Gdx.audio.newSound(Gdx.files.internal(SFX_POINT_OGG));
     SFX_WING = Gdx.audio.newSound(Gdx.files.internal(SFX_WING_OGG));
     SFX_DIE = Gdx.audio.newSound(Gdx.files.internal(SFX_DIE_OGG));
     SFX_HIT = Gdx.audio.newSound(Gdx.files.internal(SFX_HIT_OGG));
     MUSIC = Gdx.audio.newMusic(Gdx.files.internal(MUSIC_SOUND));
     MUSIC.setLooping(true);
+  }
 
+  private static void loadFonts() {
     FONT = new BitmapFont(Gdx.files.internal("text/text.fnt"));
     FONT.getData().setScale(.25f, .25f);
     SHADOW = new BitmapFont(Gdx.files.internal("text/shadow.fnt"));
     SHADOW.getData().setScale(.25f, .25f);
+  }
+
+  public static void setHighScore(int score) {
+    PREFS.putInteger("highScore", score);
+    PREFS.flush();
+  }
+
+  public static int getHighScore() {
+    return PREFS.getInteger("highScore");
   }
 
   public static void dispose() {
