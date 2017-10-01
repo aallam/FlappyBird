@@ -12,7 +12,7 @@ public class Tube extends Scrollable {
 
   public static final int TUBE_GAP = 100; //Distance between top and bottom tubes
   private static final int LOWEST_OPENING = -180; //Lowest point to draw the top tube from
-  private static final int OPENING_MAX = 200;
+  private static final int HIGHEST_OPENING = 200;
 
   private Random random;
   private Rectangle boundsBottom, boundsTop;
@@ -39,14 +39,6 @@ public class Tube extends Scrollable {
     scored = false;
   }
 
-  public Rectangle getBoundsBottom() {
-    return boundsBottom;
-  }
-
-  public Rectangle getBoundsTop() {
-    return boundsTop;
-  }
-
   public boolean isScored() {
     return scored;
   }
@@ -56,11 +48,16 @@ public class Tube extends Scrollable {
   }
 
   private int generateY() {
-    return random.nextInt(OPENING_MAX) + LOWEST_OPENING;
+    return random.nextInt(HIGHEST_OPENING) + LOWEST_OPENING;
   }
 
   @Override public boolean collides(Bird bird) {
-    return position.x < bird.getX() + bird.getWidth() && (Intersector.overlaps(bird.getBounds(),
+    return position.x < bird.getTailX() && (Intersector.overlaps(bird.getBounds(),
         boundsTop) || Intersector.overlaps(bird.getBounds(), boundsBottom));
+  }
+
+  @Override public void onReset(float x, float y, float scrollSpeed) {
+    velocity.x = scrollSpeed;
+    reset(x);
   }
 }

@@ -42,16 +42,20 @@ public abstract class Scrollable {
     return isScrolledLeft;
   }
 
-  public float getTailX() {
-    return position.x + width;
-  }
-
   public float getX() {
     return position.x;
   }
 
+  public float getTailX() {
+    return position.x + width;
+  }
+
   public float getY() {
     return position.y;
+  }
+
+  public float getTailY() {
+    return position.y + height;
   }
 
   public int getWidth() {
@@ -64,6 +68,11 @@ public abstract class Scrollable {
 
   public void stop() {
     velocity.x = 0;
+  }
+
+  public void onReset(float x, float y, float scrollSpeed) {
+    position.set(x , y);
+    velocity.x = scrollSpeed;
   }
 
   public abstract boolean collides(Bird bird);

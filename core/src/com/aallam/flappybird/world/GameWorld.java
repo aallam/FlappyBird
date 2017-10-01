@@ -4,15 +4,17 @@ import com.aallam.flappybird.helpers.AssetLoader;
 import com.aallam.flappybird.helpers.ScrollHandler;
 import com.aallam.flappybird.objects.Bird;
 import com.aallam.flappybird.world.interfaces.GameObjects;
+import com.aallam.flappybird.world.interfaces.Status;
 
 import static com.aallam.flappybird.FlappyBird.SFX_VOLUME;
 import static com.aallam.flappybird.objects.Ground.GROUND_OFFSET_Y;
+import static com.aallam.flappybird.world.GameState.READY;
 
 /**
  * Created by mouaad on 28/09/17.
  */
 
-public class GameWorld implements GameObjects {
+public class GameWorld implements GameObjects, Status {
 
   private static final int BIRD_DEFAULT_X = 80;
   private static final int BIRD_DEFAULT_Y = 300;
@@ -20,8 +22,10 @@ public class GameWorld implements GameObjects {
   private Bird bird;
   private ScrollHandler scroller;
   private int score;
+  private GameState state;
 
   public GameWorld() {
+    state = READY;
     bird = new Bird(BIRD_DEFAULT_X, BIRD_DEFAULT_Y,
         AssetLoader.TEXTURE_BIRD_ANIMATION.getWidth() / AssetLoader.ANIMATION_BIRD_FRAME_COUNT,
         AssetLoader.TEXTURE_BIRD_ANIMATION.getHeight());
@@ -29,6 +33,27 @@ public class GameWorld implements GameObjects {
   }
 
   public void update(float delta) {
+    switch (state) {
+      case READY:
+        updateReady(delta);
+        break;
+
+      case PLAYING:
+      default:
+        updatePlaying(delta);
+        break;
+    }
+  }
+
+  private void updateReady(float delta) {
+    scroller.updateGround(delta);
+  }
+
+  public void updatePlaying(float delta) {
+    if (delta > .15f) {
+      delta = .15f;
+    }
+
     bird.update(delta);
     scroller.update(delta);
     // Stop in case of collision
@@ -41,6 +66,7 @@ public class GameWorld implements GameObjects {
 
     if (!bird.isAlive() && scroller.groundCollides(bird)) {
       bird.stop();
+      state = GameState.OVER;
     }
   }
 
@@ -58,5 +84,24 @@ public class GameWorld implements GameObjects {
 
   @Override public void addScore(int increment) {
     score += increment;
+  }
+
+  @Override public boolean isReady() {
+    return state == GameState.READY;
+  }
+
+  @Override public boolean isGameOver() {
+    return state == GameState.OVER;
+  }
+
+  @Override public void start() {
+    state = GameState.PLAYING;
+  }
+
+  @Override public void restart() {
+    state = GameState.READY;
+    score = 0;
+    bird.onRestart(BIRD_DEFAULT_X, BIRD_DEFAULT_Y);
+    scroller.onRestart(GROUND_OFFSET_Y);
   }
 }

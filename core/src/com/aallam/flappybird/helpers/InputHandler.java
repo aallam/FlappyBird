@@ -1,6 +1,7 @@
 package com.aallam.flappybird.helpers;
 
 import com.aallam.flappybird.objects.Bird;
+import com.aallam.flappybird.world.interfaces.Status;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
@@ -11,17 +12,15 @@ import com.badlogic.gdx.InputProcessor;
 public class InputHandler implements InputProcessor {
 
   private Bird bird;
+  private Status status;
 
-  public InputHandler(Bird bird) {
+  public InputHandler(Bird bird, Status status) {
     this.bird = bird;
+    this.status = status;
   }
 
   @Override public boolean keyDown(int keycode) {
-    if (keycode == Input.Keys.SPACE) {
-      bird.onClick();
-      return true;
-    }
-    return false;
+    return keycode == Input.Keys.SPACE && handleBird();
   }
 
   @Override public boolean keyUp(int keycode) {
@@ -33,7 +32,7 @@ public class InputHandler implements InputProcessor {
   }
 
   @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    return bird.onClick();
+    return handleBird();
   }
 
   @Override public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -50,5 +49,19 @@ public class InputHandler implements InputProcessor {
 
   @Override public boolean scrolled(int amount) {
     return false;
+  }
+
+  private boolean handleBird() {
+    if (status.isReady()) {
+      status.start();
+    }
+
+    bird.onClick();
+
+    if (status.isGameOver()) {
+      status.restart();
+    }
+
+    return true;
   }
 }

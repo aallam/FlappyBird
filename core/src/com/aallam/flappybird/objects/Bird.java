@@ -113,8 +113,16 @@ public class Bird {
     return position.x;
   }
 
+  public float getTailX() {
+    return position.x + width;
+  }
+
   public float getY() {
     return position.y;
+  }
+
+  public float getTailY() {
+    return position.y + height;
   }
 
   public float getWidth() {
@@ -141,7 +149,11 @@ public class Bird {
     this.alive = alive;
   }
 
-  private void checkCeiling() {
-
+  public void onRestart(float x, float y) {
+    position.set(x, y);
+    rotation = 0;
+    velocity.set(0 , 0);
+    acceleration.set(0, GRAVITY);
+    alive = true;
   }
 }
