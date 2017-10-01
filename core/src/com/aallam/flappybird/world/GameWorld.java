@@ -5,6 +5,7 @@ import com.aallam.flappybird.helpers.ScrollHandler;
 import com.aallam.flappybird.objects.Bird;
 import com.badlogic.gdx.utils.Disposable;
 
+import static com.aallam.flappybird.FlappyBird.SFX_VOLUME;
 import static com.aallam.flappybird.objects.Ground.GROUND_OFFSET_Y;
 
 /**
@@ -29,6 +30,12 @@ public class GameWorld implements Disposable {
   public void update(float delta) {
     bird.update(delta);
     scroller.update(delta);
+    // Stop in case of collision
+    if (bird.isAlive() && scroller.collides(bird)) {
+      scroller.stop();
+      AssetLoader.SFX_DIE.play(SFX_VOLUME);
+      bird.setAlive(false);
+    }
   }
 
   public Bird getBird() {

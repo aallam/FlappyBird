@@ -1,5 +1,6 @@
 package com.aallam.flappybird.objects;
 
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
@@ -32,5 +33,9 @@ public class Ground extends Scrollable {
 
   public Rectangle getBounds() {
     return bounds;
+  }
+
+  @Override public boolean collides(Bird bird) {
+    return position.y + height > bird.getY() && (Intersector.overlaps(bird.getBounds(), bounds));
   }
 }

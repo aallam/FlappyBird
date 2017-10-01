@@ -62,4 +62,9 @@ public abstract class Scrollable {
     return height;
   }
 
+  public void stop() {
+    velocity.x = 0;
+  }
+
+  public abstract boolean collides(Bird bird);
 }

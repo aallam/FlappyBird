@@ -29,6 +29,7 @@ public class Bird {
   private float rotation;
   private int width;
   private int height;
+  private boolean alive;
 
   public Bird(float x, float y, int width, int height) {
     this.width = width;
@@ -37,6 +38,7 @@ public class Bird {
     velocity = new Vector2(0, 0);
     acceleration = new Vector2(0, GRAVITY);
     bounds = new Circle();
+    alive = true;
   }
 
   public void update(float delta) {
@@ -101,5 +103,13 @@ public class Bird {
 
   public Circle getBounds() {
     return bounds;
+  }
+
+  public boolean isAlive() {
+    return alive;
+  }
+
+  public void setAlive(boolean alive) {
+    this.alive = alive;
   }
 }

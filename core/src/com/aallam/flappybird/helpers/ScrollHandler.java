@@ -1,5 +1,6 @@
 package com.aallam.flappybird.helpers;
 
+import com.aallam.flappybird.objects.Bird;
 import com.aallam.flappybird.objects.Ground;
 import com.aallam.flappybird.objects.Tube;
 import com.aallam.flappybird.screens.GameScreen;
@@ -72,5 +73,21 @@ public class ScrollHandler {
 
   public Tube getTube3() {
     return tube3;
+  }
+
+  public void stop() {
+    frontGround.stop();
+    backGround.stop();
+    tube1.stop();
+    tube2.stop();
+    tube3.stop();
+  }
+
+  public boolean collides(Bird bird) {
+    return (tube1.collides(bird)
+        || tube2.collides(bird)
+        || tube3.collides(bird)
+        || backGround.collides(bird)
+        || frontGround.collides(bird));
   }
 }

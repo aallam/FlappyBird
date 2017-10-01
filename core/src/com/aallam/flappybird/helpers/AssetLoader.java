@@ -21,6 +21,7 @@ public class AssetLoader {
 
   private static final String MUSIC_SOUND = "music.mp3";
   private static final String SFX_WING_OGG = "sfx_wing.ogg";
+  private static final String SFX_DIE_OGG = "sfx_die.ogg";
 
   public static final int ANIMATION_BIRD_FRAME_COUNT = 3;
   public static Texture TEXTURE_BIRD_ANIMATION;
@@ -33,6 +34,7 @@ public class AssetLoader {
   public static Texture BACKGROUND;
   public static Music MUSIC;
   public static Sound SFX_WING;
+  public static Sound SFX_DIE;
 
   public static void load() {
     PLAY_BUTTON = new Texture(Gdx.files.internal(TEXTURE_PLAY_BUTTON));
@@ -54,6 +56,7 @@ public class AssetLoader {
     BIRD_ANIMATION.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
     SFX_WING = Gdx.audio.newSound(Gdx.files.internal(SFX_WING_OGG));
+    SFX_DIE = Gdx.audio.newSound(Gdx.files.internal(SFX_DIE_OGG));
     MUSIC = Gdx.audio.newMusic(Gdx.files.internal(MUSIC_SOUND));
     MUSIC.setLooping(true);
   }
@@ -66,5 +69,6 @@ public class AssetLoader {
     BACKGROUND.dispose();
     MUSIC.dispose();
     SFX_WING.dispose();
+    SFX_DIE.dispose();
   }
 }

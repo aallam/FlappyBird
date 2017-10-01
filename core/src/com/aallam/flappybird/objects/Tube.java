@@ -1,5 +1,6 @@
 package com.aallam.flappybird.objects;
 
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import java.util.Random;
 
@@ -46,5 +47,10 @@ public class Tube extends Scrollable {
 
   private int generateY() {
     return random.nextInt(OPENING_MAX) + LOWEST_OPENING;
+  }
+
+  @Override public boolean collides(Bird bird) {
+    return position.x < bird.getX() + bird.getWidth() && (Intersector.overlaps(bird.getBounds(),
+        boundsTop) || Intersector.overlaps(bird.getBounds(), boundsBottom));
   }
 }
