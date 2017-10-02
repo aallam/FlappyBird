@@ -25,9 +25,9 @@ public class GameWorld implements GameObjects, Status {
   private GameState state;
 
   public GameWorld() {
+    AssetLoader.setHighScore(0); //FOR DEBUG
     state = READY;
-    bird = new Bird(BIRD_DEFAULT_X, BIRD_DEFAULT_Y,
-        AssetLoader.TEXTURE_BIRD_ANIMATION.getWidth() / AssetLoader.ANIMATION_BIRD_FRAME_COUNT,
+    bird = new Bird(BIRD_DEFAULT_X, BIRD_DEFAULT_Y, AssetLoader.TEXTURE_BIRD_ANIMATION.getWidth() / AssetLoader.ANIMATION_BIRD_FRAME_COUNT,
         AssetLoader.TEXTURE_BIRD_ANIMATION.getHeight());
     scroller = new ScrollHandler(this, GROUND_OFFSET_Y);
   }
@@ -64,9 +64,15 @@ public class GameWorld implements GameObjects, Status {
       bird.die();
     }
 
-    if (!bird.isAlive() && scroller.groundCollides(bird)) {
+    if (!bird.isAlive() && scroller.groundCollides(bird) && !isHighScore()) {
       bird.stop();
       state = GameState.OVER;
+      System.out.println("prefs: " + AssetLoader.getHighScore() + " score : " + score);
+      if (score > AssetLoader.getHighScore()) {
+        System.out.println("New Score");
+        AssetLoader.setHighScore(score);
+        state = GameState.SCORE;
+      }
     }
   }
 
@@ -92,6 +98,10 @@ public class GameWorld implements GameObjects, Status {
 
   @Override public boolean isGameOver() {
     return state == GameState.OVER;
+  }
+
+  @Override public boolean isHighScore() {
+    return state == GameState.SCORE;
   }
 
   @Override public void start() {

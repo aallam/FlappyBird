@@ -6,12 +6,14 @@ package com.aallam.flappybird.world.interfaces;
 
 public interface Status {
 
-  public boolean isReady();
+  boolean isReady();
 
-  public boolean isGameOver();
+  boolean isGameOver();
 
-  public void start();
+  boolean isHighScore();
 
-  public void restart();
+  void start();
+
+  void restart();
 
 }

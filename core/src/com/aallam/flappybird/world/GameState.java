@@ -5,5 +5,5 @@ package com.aallam.flappybird.world;
  */
 
 public enum GameState {
-  READY, PLAYING, OVER
+  READY, PLAYING, OVER, SCORE
 }
