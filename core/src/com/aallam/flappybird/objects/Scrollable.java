@@ -14,7 +14,7 @@ public abstract class Scrollable {
   protected int height;
   protected boolean isScrolledLeft;
 
-  public Scrollable(float x, float y, int width, int height, float scrollSpeed) {
+  Scrollable(float x, float y, int width, int height, float scrollSpeed) {
     this.width = width;
     this.height = height;
     position = new Vector2(x, y);

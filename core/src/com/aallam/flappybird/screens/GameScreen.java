@@ -13,14 +13,15 @@ import com.badlogic.gdx.Screen;
 
 public class GameScreen implements Screen {
 
-  public static final int WIDTH = (int) (FlappyBird.WIDTH * 0.617);
-  public static final int HEIGHT = (int) (FlappyBird.HEIGHT * 0.617);
+  private static final String TAG = "GameScreen";
+  public static final float WIDTH = FlappyBird.WIDTH * 0.617f;
+  public static final float HEIGHT = FlappyBird.HEIGHT * 0.617f;
 
   private GameWorld world;
   private GameRenderer renderer;
   private float runTime;
 
-  public GameScreen() {
+  GameScreen() {
     Gdx.app.log("GameScreen", "attached");
 
     world = new GameWorld();
@@ -35,23 +36,23 @@ public class GameScreen implements Screen {
   }
 
   @Override public void resize(int width, int height) {
-
+    Gdx.app.log(TAG, "resize");
   }
 
   @Override public void show() {
-    Gdx.app.log("GameScreen", "show");
+    Gdx.app.log(TAG, "show");
   }
 
   @Override public void hide() {
-    Gdx.app.log("GameScreen", "hide");
+    Gdx.app.log(TAG, "hide");
   }
 
   @Override public void pause() {
-    Gdx.app.log("GameScreen", "pause");
+    Gdx.app.log(TAG, "pause");
   }
 
   @Override public void resume() {
-    Gdx.app.log("GameScreen", "resume");
+    Gdx.app.log(TAG, "resume");
   }
 
   @Override public void dispose() {

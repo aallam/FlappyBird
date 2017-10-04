@@ -23,11 +23,11 @@ public class Ground extends Scrollable {
     bounds.setPosition(position.x, position.y);
   }
 
-  public int getWidth() {
+  @Override public int getWidth() {
     return width;
   }
 
-  public int getHeight() {
+  @Override public int getHeight() {
     return height;
   }
 

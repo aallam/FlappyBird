@@ -8,7 +8,6 @@ import com.aallam.flappybird.world.interfaces.Status;
 
 import static com.aallam.flappybird.FlappyBird.SFX_VOLUME;
 import static com.aallam.flappybird.objects.Ground.GROUND_OFFSET_Y;
-import static com.aallam.flappybird.world.GameState.READY;
 
 /**
  * Created by mouaad on 28/09/17.
@@ -25,8 +24,7 @@ public class GameWorld implements GameObjects, Status {
   private GameState state;
 
   public GameWorld() {
-    AssetLoader.setHighScore(0); //FOR DEBUG
-    state = READY;
+    state = GameState.READY;
     bird = new Bird(BIRD_DEFAULT_X, BIRD_DEFAULT_Y, AssetLoader.TEXTURE_BIRD_ANIMATION.getWidth() / AssetLoader.ANIMATION_BIRD_FRAME_COUNT,
         AssetLoader.TEXTURE_BIRD_ANIMATION.getHeight());
     scroller = new ScrollHandler(this, GROUND_OFFSET_Y);
@@ -49,7 +47,7 @@ public class GameWorld implements GameObjects, Status {
     scroller.updateGround(delta);
   }
 
-  public void updatePlaying(float delta) {
+  private void updatePlaying(float delta) {
     if (delta > .15f) {
       delta = .15f;
     }
@@ -67,9 +65,7 @@ public class GameWorld implements GameObjects, Status {
     if (!bird.isAlive() && scroller.groundCollides(bird) && !isHighScore()) {
       bird.stop();
       state = GameState.OVER;
-      System.out.println("prefs: " + AssetLoader.getHighScore() + " score : " + score);
       if (score > AssetLoader.getHighScore()) {
-        System.out.println("New Score");
         AssetLoader.setHighScore(score);
         state = GameState.SCORE;
       }

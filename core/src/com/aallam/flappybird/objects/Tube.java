@@ -15,7 +15,8 @@ public class Tube extends Scrollable {
   private static final int HIGHEST_OPENING = 200;
 
   private Random random;
-  private Rectangle boundsBottom, boundsTop;
+  private Rectangle boundsBottom;
+  private Rectangle boundsTop;
   private boolean scored;
 
   public Tube(float x, float y, int width, int height, float scrollSpeed) {

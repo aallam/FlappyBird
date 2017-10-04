@@ -28,24 +28,29 @@ import static com.aallam.flappybird.objects.Tube.TUBE_GAP;
 public class GameRenderer implements Disposable {
 
   private GameObjects gameObjects;
-  private OrthographicCamera camera;
   private ShapeRenderer shapeRenderer;
   private SpriteBatch spriteBatch;
 
   // Game Objects
   private Bird bird;
-  private ScrollHandler scroller;
-  private Tube tube1, tube2, tube3;
-  private Ground frontGround, backGround;
+  private Tube tube1;
+  private Tube tube2;
+  private Tube tube3;
+  private Ground frontGround;
+  private Ground backGround;
 
   // Game Assets
-  private Texture groundTxtr, backgroundDayTxtr, tubeTxtr, startTxtr, gameover;
+  private Texture groundTxtr;
+  private Texture backgroundDayTxtr;
+  private Texture tubeTxtr;
+  private Texture startTxtr;
+  private Texture gameover;
   private Animation<TextureRegion> birdAnim;
 
   public GameRenderer(GameObjects gameObjects) {
     this.gameObjects = gameObjects;
 
-    camera = new OrthographicCamera();
+    OrthographicCamera camera = new OrthographicCamera();
     camera.setToOrtho(false, GameScreen.WIDTH, GameScreen.HEIGHT);
 
     spriteBatch = new SpriteBatch();
@@ -60,7 +65,7 @@ public class GameRenderer implements Disposable {
 
   private void initGameObjects() {
     bird = gameObjects.getBird();
-    scroller = gameObjects.getScroller();
+    ScrollHandler scroller = gameObjects.getScroller();
     frontGround = scroller.getFrontGround();
     backGround = scroller.getBackGround();
     tube1 = scroller.getTube1();
@@ -78,8 +83,6 @@ public class GameRenderer implements Disposable {
   }
 
   public void render(float runTime) {
-    //Gdx.app.log("GameRenderer", "render");
-
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     // Begin SpriteBatch

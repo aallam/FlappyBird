@@ -20,8 +20,11 @@ public class ScrollHandler {
   private static final int SCROLL_SPEED = -60;
 
   private Score score;
-  private Ground frontGround, backGround;
-  private Tube tube1, tube2, tube3;
+  private Ground frontGround;
+  private Ground backGround;
+  private Tube tube1;
+  private Tube tube2;
+  private Tube tube3;
 
   public ScrollHandler(Score score, float yPos) {
     this.score = score;

@@ -29,16 +29,32 @@ public class AssetLoader {
   private static final String SFX_POINT_OGG = "sound/sfx_point.ogg";
   private static final String SFX_HIT_OGG = "sound/sfx_hit.ogg";
 
+  private static final String PREFS_GAME = "FLAPPY_BIRD";
+  private static final String PREFS_HIGHSCORE = "HIGH_SCORE";
+
   public static final int ANIMATION_BIRD_FRAME_COUNT = 3;
   public static Texture TEXTURE_BIRD_ANIMATION;
 
   public static TextureRegion[] BIRD;
   public static Animation<TextureRegion> BIRD_ANIMATION;
-  public static Texture LOGO, START, TUBE, GROUND, BACKGROUND_DAY, GAMEOVER;
+  public static Texture LOGO;
+  public static Texture START;
+  public static Texture TUBE;
+  public static Texture GROUND;
+  public static Texture BACKGROUND_DAY;
+  public static Texture GAMEOVER;
   public static Music MUSIC;
-  public static Sound SFX_WING, SFX_DIE, SFX_HIT, SFX_POINT;
-  public static BitmapFont FONT, SHADOW;
+  public static Sound SFX_WING;
+  public static Sound SFX_DIE;
+  public static Sound SFX_HIT;
+  public static Sound SFX_POINT;
+  public static BitmapFont FONT;
+  public static BitmapFont SHADOW;
   public static Preferences PREFS;
+
+  private AssetLoader(){
+    // Empty
+  }
 
   public static void load() {
     loadPrefs();
@@ -48,9 +64,9 @@ public class AssetLoader {
   }
 
   private static void loadPrefs() {
-    PREFS = Gdx.app.getPreferences("FlappyBird");
-    if (!PREFS.contains("highScore")) {
-      PREFS.putInteger("highScore", 0);
+    PREFS = Gdx.app.getPreferences(PREFS_GAME);
+    if (!PREFS.contains(PREFS_HIGHSCORE)) {
+      PREFS.putInteger(PREFS_HIGHSCORE, 0);
     }
   }
 
